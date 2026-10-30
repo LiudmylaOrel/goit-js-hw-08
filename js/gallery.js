@@ -65,26 +65,35 @@ const images = [
 ];
 
 const gallery = document.querySelector('.gallery');
-const list = document.createDocumentFragment();
-images.forEach(({ preview, original, description }) => {
-  const li = document.createElement('li');
-  const a = document.createElement('a');
-  const img = document.createElement('img');
-
-  a.classList.add('gallery-link');
-  img.classList.add('gallery-image');
-
-  a.href = original;
-  img.src = preview;
-  img.dataset.source = original;
-  img.alt = description;
-
-  a.append(img);
-  li.append(a);
-  list.append(li);
+const galleryMarkup = images.map(({ preview, original, description }) => {
+  return `<li class="gallery-item">
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>`;
 });
 
-gallery.append(list);
+gallery.innerHTML = galleryMarkup.join('');
+
+const liList = document.querySelector('.gallery-item');
+
 gallery.addEventListener('click', event => {
   event.preventDefault();
+
+  if (!event.target.classList.contains('gallery-image')) {
+    return;
+  }
+
+  const originalImage = event.target.getAttribute('data-source');
+  const descriptionName = event.target.getAttribute('alt');
+
+  const instance = basicLightbox.create(
+    `<img src="${originalImage}" alt="${descriptionName}"> width="800" height="600"`
+  );
+  instance.show(instance);
 });
