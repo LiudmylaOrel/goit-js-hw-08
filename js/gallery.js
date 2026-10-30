@@ -80,8 +80,6 @@ const galleryMarkup = images.map(({ preview, original, description }) => {
 
 gallery.innerHTML = galleryMarkup.join('');
 
-const liList = document.querySelector('.gallery-item');
-
 gallery.addEventListener('click', event => {
   event.preventDefault();
 
@@ -93,7 +91,7 @@ gallery.addEventListener('click', event => {
   const descriptionName = event.target.getAttribute('alt');
 
   const instance = basicLightbox.create(
-    `<img src="${originalImage}" alt="${descriptionName}"> width="800" height="600"`
+    `<img src="${originalImage}" alt="${descriptionName}" width="800" height="600">`
   );
-  instance.show(instance);
+  instance.show();
 });
